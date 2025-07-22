@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  {% load custom_filters %}
+  <head>
+    <title>Invoice</title>
+
+    <style>
+      @page {
+        size: 210mm 297mm;
+        margin: 2mm;
+        /* margin-top: 0; */
+        /* Set the size for the page */
+      }
+      body {
+        text-transform: uppercase;
+        font-size: 12px;
+        font-family: "Times New Roman", Times, serif;
+        margin-top: 0;
+        padding: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+      }
+
+      .qr-code img {
+        height: 60px;
+        background-color: aquamarine;
+        margin: 0;
+        padding: 0;
+      }
+      hr.dashed {
+        border: none;
+        border-top: 1px dashed #000; /* Dashed line */
+      }
+
+      .alignleft {
+        text-align: left;
+      }
+      .alignright {
+        text-align: right;
+      }
+      .qr-code img {
+        height: 1px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <table class="header">
+      <tbody>
+        <br />
+        <tr>
+          <td style="text-align: center" colspan="3" style="font-weight: bold">
+            <h1>{{ sub_type }}</h1>
+          </td>
+        </tr>
+
+        <br />
+        <tr>
+          <td style="text-transform: uppercase">NAME : {{ name }}</td>
+          <td style="width: 40%"></td>
+
+          <td style="width: 25%">BRANCH : {{ branch_name }}</td>
+        </tr>
+        <tr>
+          <td style="text-transform: uppercase">MOBILE : {{ mobile }}</td>
+          <td style="width: 40%"></td>
+
+          <td style="width: 25%">BILL NO : {{ bill_no }}</td>
+        </tr>
+        {% if order_details %}
+        <tr>
+          <td style="text-transform: uppercase">ADDRESS : {{ address.line1 }}</td>
+          
+          
+          <td style="width: 40%"></td>
+          <td style="width: 25%">ORDER NO : {{ order_details.order_no }}</td>
+          
+        </tr>
+
+        <tr>
+          <td style="text-transform: uppercase"> 
+            {% if address.state_name %} 
+            {{ address.state_name }} - {{ address.pincode }} 
+            {% endif %}</td>
+          <td></td>
+
+          <td>DATE : {{ bill_date| format_date }}</td>
+        </tr>
+        {% endif %}
+
+        {% if not order_details %}
+        <tr>
+          <td style="text-transform: uppercase">ADDRESS : {{ address.line1 }}</td>
+          
+          
+          <td style="width: 40%"></td>
+          <td>DATE : {{ bill_date| format_date }}</td>
+          
+        </tr>
+
+        <tr>
+          <td style="text-transform: uppercase"> 
+            {% if address.state_name %} 
+            {{ address.state_name }} - {{ address.pincode }} 
+            {% endif %}</td>
+          <td></td>         
+        </tr>
+        {% endif %}
+
+        {% comment %} <tr>
+          <td style="text-transform: uppercase">
+            ADDRESS : {{ address.line1 }}
+          </td>
+
+          <td></td>
+        </tr> {% endcomment %}
+
+        {% comment %} <tr>
+          <td style="text-transform: uppercase">
+            {% if address.state_name %} 
+            {{ address.state_name }} - {{ address.pincode }} 
+            {% endif %}
+          </td>
+
+          <td></td>
+        </tr> {% endcomment %}
+
+        <tr></tr>
+
+        <tr>
+          <td style="text-transform: uppercase"></td>
+          <td></td>
+
+          <td></td>
+        </tr>
+
+        <tr>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            <hr class="dashed" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="sales_details" style="width: 100%">
+      <thead>
+        <tr>
+          <h4>
+            Received with thanks from Mr./Ms. {{ name }} with the sum of 
+            {{ amount | format_currency }} as payment for {{ remarks }}
+          </h4>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="7">
+            <hr class="" style="border: none; border-top: 1px dashed #000" />
+          </td>
+        </tr>
+
+        <tr style="font-weight: bold">
+          <td colspan="5"></td>
+          <td class="alignleft" style="font-weight: bold">SUMMARY</td>
+        </tr>
+
+        {% for item in payment_details %}
+        <tr>
+          <td colspan="5"></td>
+          <td class="alignleft">{{ item.payment_mode }}</td>
+          <td class="alignright">{{item.payment_amount |format_currency}}</td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+          <td colspan="5" style="width: 70%"></td>
+
+          <td colspan="2">
+            <hr class="dashed" />
+          </td>
+        </tr>
+
+        <tr style="font-weight: bold">
+          <td colspan="5" style="width: 70%"></td>
+
+          <td class="alignleft" style="font-weight: bold">TOTAL</td>
+          <!-- <td class="alignright">{{total_gwt}}</td>
+                <td class="alignright">{{total_nwt}}</td> -->
+          <td class="alignright">{{amount |format_currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+from django.urls import path
+from .views import (CustomerImpDatesView, NewUserDashView, AccountsDashView,PaymentThroughView,ActiveChitsView,
+                    CustomerDashView, PaymentModeView, PaymentStatusView, UsersJoinedThrough, SchemeWiseJoinedView,
+                    SchemeWiseClosedView, BranchWiseJoinedView, BranchWiseClosedView, UserByAreasView, MaturedandUnclaimedChitsView,
+                    ChitClosingDetailsView, InActiveChits, RegisteredThrough, PaymentSummaryView, CustomerRegistrationDetailView,
+                    OrderDetailsView, CustomerImpDatesListView,ActiveChitsReportsView,MaturedandUnclaimedChitsReportView,PaymentSummaryReportView,
+                    AdminAppDashboardDatas,SupplierRateCutList,SupllierPurchaseEntryDetailsList,PurchaseDetailList,
+                    BranchWiseCollectionView, DigiGoldDashboardSummaryView, DigiMonthlyMetalWiseCountView, DigiSchemesClosedAccountsSummaryView,
+                    DigiGoldSchemeSlabWiseAccountCount, DigiGoldUpcomingMaturitiesAccountsView)
+
+urlpatterns = [
+      path('newuser_dash/', NewUserDashView.as_view()),
+      path('accounts_dash/', AccountsDashView.as_view()),
+      path('cus_dash/', CustomerDashView.as_view()),
+      
+      path('cus_imp_dates/', CustomerImpDatesView.as_view()),
+      path('cus_imp_dates_list/', CustomerImpDatesListView.as_view()),
+      path('payment_through/', PaymentThroughView.as_view()), 
+      path('payment_modes/', PaymentModeView.as_view()),
+      path('payment_status/', PaymentStatusView.as_view()),
+      path('user_joined_through/', UsersJoinedThrough.as_view()), 
+      path('scheme_wise_joined/', SchemeWiseJoinedView.as_view()), 
+      path('scheme_wise_closed/', SchemeWiseClosedView.as_view()),
+      path('branch_wise_joined/', BranchWiseJoinedView.as_view()), 
+      path('branch_wise_closed/', BranchWiseClosedView.as_view()),
+      path('branch_wise_collection/', BranchWiseCollectionView.as_view()),
+      path('user_by_areas/', UserByAreasView.as_view()),
+      path('payment_summary/', PaymentSummaryView.as_view()),
+      path('customer_reg_detail/', CustomerRegistrationDetailView.as_view()),
+      path('orders_detail/', OrderDetailsView.as_view()),
+      path('registered_through/', RegisteredThrough.as_view()),
+      path('active_chits/', ActiveChitsView.as_view()),
+      path('inactive_chits/', InActiveChits.as_view()),
+      path('matured_and_unclaimed_chits/', MaturedandUnclaimedChitsView.as_view()),
+      path('chit_closing_detail/', ChitClosingDetailsView.as_view()),
+
+      path('active_chits_reports/', ActiveChitsReportsView.as_view()),
+      path('matured_and_unclaimed_chits_reports/', MaturedandUnclaimedChitsReportView.as_view()),
+      path('payment_summary_reports/', PaymentSummaryReportView.as_view()),
+      
+      path('admin_app_dashboard/', AdminAppDashboardDatas.as_view()),
+      path('purchaseentrydetailslistapi/', SupplierRateCutList.as_view()),
+      path('supllierpurchaseentrydetailslist/', SupllierPurchaseEntryDetailsList.as_view()),
+      path('purchasedetaillist/',PurchaseDetailList.as_view()),
+      
+      path('digi_gold/summary/',DigiGoldDashboardSummaryView.as_view()),
+      path('digi_gold/monthly_wise_metal_weight/',DigiMonthlyMetalWiseCountView.as_view()),
+      path('digi_gold/closed_accounts_summary/',DigiSchemesClosedAccountsSummaryView.as_view()),
+      path('digi_gold/slab_wise_accounts/',DigiGoldSchemeSlabWiseAccountCount.as_view()),
+      path('digi_gold/upcoming_maturities/',DigiGoldUpcomingMaturitiesAccountsView.as_view()),
+]

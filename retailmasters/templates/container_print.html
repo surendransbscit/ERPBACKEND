@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Container Print</title>
+    <style>
+      @page {
+        size: 80mm 80mm; /* Set the size for the page */
+      }
+      body {
+        width: 30mm; /* Set the width as per your thermal printer's width */
+        font-family: Arial, sans-serif; /* Example font family */
+        font-size: 13px;
+        margin-left: 12px;
+        margin-top: 10px;
+      }
+      .qr-code img {
+        width: 200px;
+        height: 200px;
+        display: block;
+        text-align: center;
+      }
+      .tag-value {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="" style="margin-top: 10px">
+      {% comment %} <p style="margin-top: 40px">Container</p> {% endcomment %}
+    </div>
+    <div class="qr-code">
+      <img src="{{ data.qr_path }}" alt="QR Code" />
+    </div>
+    <span class="tag-value">Name : {{ data.name }}</span>
+    <span class="tag-value">UID : {{ data.uid }}</span>
+  </body>
+</html>

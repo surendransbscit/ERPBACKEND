@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+{% load custom_filters %}
+<head>
+    <title>LOT  {{lot_code}}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 5mm;
+        }
+        body{
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Courier New", Courier, monospace;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+        }
+
+        .alignleft{
+            text-align: left;
+        }
+        .alignright{
+            text-align: right;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+<table>
+    <tbody>
+        
+        <tr>
+            <td class="alignleft"> LOT NO : {{lot_code}}</td>
+            <td class="alignright" > BRANCH   : {{ branch }}</td>
+        </tr>
+
+        <tr>
+            <td class="alignleft"> SUPPLIER : {{ supplier_name }}</td>
+            <td class="alignright"> DATE   : {{ lot_date}}</td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+    {% if item_details %}
+    <table class="purchase" style="width: 100%; border-collapse: collapse">
+        <thead>
+            <tr>
+                <th colspan="5">
+                    <h3>LOT DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" >DESC</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >GWT</th>
+                <th class="alignright" >NWT</th>
+                <th class="alignright" >LWT</th>
+                <!-- <th class="alignright" >DIA.WT</th>
+                <th class="alignright" >STN.WT</th> -->
+                <!-- <th class="alignright"  >AMT</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            {% for item in item_details %}
+
+            <tr >
+                <td class="alignleft">{{ item.product_name }}</td>
+                <td class="alignright" >{{ item.pieces }}</td>
+                <td class="alignright" >{{ item.gross_wt }}</td>
+                <td class="alignright" >{{ item.net_wt }}</td>
+                <td class="alignright" >{{ item.less_wt }}</td>
+                <!-- <td class="alignright" >{{ item.dia_wt }}</td>
+                <td class="alignright" >{{ item.stone_wt }}</td> -->
+                <!-- <td class="alignright" >{{ item.purchase_cost | format_currency  }}</td> -->
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;">
+                <td class="alignleft" style="font-weight: bold;">TOTAL</td>
+                <td class="alignright" >{{total_pcs}}</td>
+                <td class="alignright" >{{total_gross_wt}}</td>
+                <td class="alignright">{{total_net_wt}}</td>
+                <td class="alignright">{{total_less_wt}}</td>
+                <!-- <td class="alignright">{{total_dia_wt}}</td>
+                <td class="alignright">{{total_stn_wt}}</td> -->
+                <!-- <td class="alignright" >{{purchase_amount | format_currency }}</td> -->
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    
+    {% endif %}
+
+    {% if branch_summary %}
+
+    <table class="summarry">
+
+        <thead>
+
+            <tr>
+                <th colspan="5">
+                    <h3>BRANCH DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" >DESC</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >GWT</th>
+                <th class="alignright" >NWT</th>
+                <th class="alignright" >LWT</th>
+                <!-- <th class="alignright" >DIA.WT</th>
+                <th class="alignright" >STN.WT</th> -->
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for key,branch in branch_summary.items %}
+   
+
+            <br>
+
+                {% for item in branch.item_details %}
+
+                    <tr>
+                        <td class="alignleft">{{ item.product_name }}</td>
+                        <td class="alignright" >{{ item.pcs }}</td>
+                        <td class="alignright" >{{ item.gross_wt }}</td>
+                        <td class="alignright" >{{ item.net_wt }}</td>
+                        <td class="alignright" >{{ item.less_wt }}</td>
+                        <!-- <td class="alignright" >{{ item.dia_wt }}</td>
+                        <td class="alignright" >{{ item.stone_wt }}</td> -->
+                    </tr>
+
+                {% endfor %}
+
+                <tr>
+                    <td colspan="5">
+                        <hr class="dashed">
+                    </td>
+                </tr>
+
+                <tr style="font-weight: bold;" >
+                    <td class="alignleft" colspan="1"> {{ branch.branch }}</td>
+                    <td class="alignright" >{{ branch.pcs }}</td>
+                    <td class="alignright" >{{ branch.gross_wt | format_wt }}</td>
+                    <td class="alignright" >{{ branch.net_wt | format_wt}}</td>
+                    <td class="alignright" >{{ branch.less_wt | format_wt }}</td>
+                    <!-- <td class="alignright" >{{ branch.dia_wt | format_wt }}</td>
+                    <td class="alignright" >{{ branch.stone_wt | format_wt }}</td> -->
+                </tr>
+
+                <tr>
+                    <td colspan="5">
+                        <hr class="dashed">
+                    </td>
+                </tr>
+
+
+            {% endfor %}
+
+            <tr style="font-weight: bold;" >
+                <td class="alignleft" > GRAND TOTAL</td>
+                <td class="alignright" >{{ tagged_summary.pcs }}</td>
+                <td class="alignright" >{{ tagged_summary.gross_wt | format_wt }}</td>
+                <td class="alignright" >{{ tagged_summary.net_wt | format_wt}}</td>
+                <td class="alignright" >{{ tagged_summary.less_wt | format_wt }}</td>
+                <!-- <td class="alignright" >{{ tagged_summary.dia_wt | format_wt }}</td>
+                <td class="alignright" >{{ tagged_summary.stone_wt | format_wt }}</td> -->
+            </tr>
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+    <br>
+
+    {% if item_details %}
+
+    <h3 style="font-weight: bold; text-align: center;">BALANCE PCS :  {{ balance_pcs }}</h3>
+
+    <h3 style="font-weight: bold; text-align: center;">BALANCE GWT :  {{ balance_wt | format_wt }}</h3>
+
+    {% endif %}
+
+
+</body>
+
+</html>

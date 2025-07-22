@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+{% load custom_filters %}
+<head>
+    <title>LOT  {{lot_code}}</title>
+    <style>
+        @page {
+            size: 101.6mm 297mm; 
+            margin: 3mm;
+        }
+        body{
+            text-transform: uppercase;
+            font-size: 10px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding: 0;
+            color:#000000;
+            background-color : #ffffff;
+            -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 12pt;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+        }
+
+        .alignleft{
+            text-align: left;
+        }
+        .alignright{
+            text-align: right;
+        }
+        @media print {
+                    .pagebreak 
+                        { 
+                            page-break-after: always;
+                            break-before: always;
+                        } /* page-break-after works, as well */
+                    body {
+                        -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+                        color-adjust: exact !important; /* Non-WebKit browsers */
+                        color:#000000;
+                        background-color : #ffffff;
+                        font-size: 12pt;
+                        line-height: normal;
+                    }
+                }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- {% include 'header.html' %} -->
+    <br></br>
+<table>
+    <tbody>
+        
+        <tr>
+            <td class="alignleft"> LOT NO : {{lot_code}}</td>
+            <td class="alignright" >DATE   : {{ lot_date  }}</td>
+        </tr>
+
+        <tr>
+            <td class="alignleft">Supplier : {{ supplier_name }}</td>
+        </tr>
+
+    </tbody>
+</table><br></br>
+
+
+    {% if item_details %}
+    <table class="purchase" style="width: 100%;">
+        <thead>
+            <tr>
+            <th colspan="4">
+                    <h3>LOT DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+            <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" >DESIGN</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >GWT</th>
+                <th class="alignright" >NWT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            {% for item in item_details %}
+
+            <tr>
+                <!-- <td class="alignleft">{{ item.product_name }}</td> -->
+                <td class="alignleft">{{ item.design_name }}</td>
+                <td class="alignright" >{{ item.pieces }}</td>
+                <td class="alignright" >{{ item.gross_wt }}</td>
+                <td class="alignright" >{{ item.net_wt }}</td>
+                <!-- <td class="alignright" >{{ item.less_wt }}</td> -->
+                <!-- <td class="alignright" >{{ item.dia_wt }}</td>
+                <td class="alignright" >{{ item.stone_wt }}</td> -->
+                <!-- <td class="alignright" >{{ item.purchase_cost | format_currency  }}</td> -->
+            </tr>
+            {% endfor %}
+
+            <tr>
+            <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;">
+                <td class="alignleft" style="font-weight: bold;">TOTAL</td>
+                <td class="alignright" >{{total_pcs}}</td>
+                <td class="alignright" >{{total_gross_wt}}</td>
+                <td class="alignright">{{total_net_wt}}</td>
+            
+            </tr>
+
+            <tr>
+            <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    {% endif %}
+
+    {% if total_tagged_pcs != 0 %}
+
+    <table class="summarry">
+
+        <thead>
+
+            <tr>
+            <th colspan="4">
+                    <h3>TAG DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+            <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" >DESC</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >GWT</th>
+                <th class="alignright" >NWT</th>
+                <!-- <th class="alignright" >DIA.WT</th>
+                <th class="alignright" >STN.WT</th> -->
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for item in tagged_details %}
+   
+
+            <br>
+
+                    <tr>
+                        <td class="alignleft">{{ item.design_name }}</td>
+                        <td class="alignright" >{{ item.tagged_pcs }}</td>
+                        <td class="alignright" >{{ item.tagged_gross_wt }}</td>
+                        <td class="alignright" >{{ item.tagged_net_wt }}</td>
+                        <!-- <td class="alignright" >{{ item.dia_wt }}</td>
+                        <td class="alignright" >{{ item.stone_wt }}</td> -->
+                    </tr>
+
+
+
+                
+
+            {% endfor %}
+             <tr>
+                <td colspan="4">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="font-weight: bold;" >
+                <td class="alignleft" > TOTAL</td>
+                <td class="alignright" >{{ total_tagged_pcs }}</td>
+                <td class="alignright" >{{ total_tagged_gross_wt | format_wt }}</td>
+                <td class="alignright" >{{ total_tagged_net_wt | format_wt}}</td>
+                <!-- <td class="alignright" >{{ tagged_summary.dia_wt | format_wt }}</td>
+                <td class="alignright" >{{ tagged_summary.stone_wt | format_wt }}</td> -->
+            </tr>
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+    <br>
+
+    {% if item_details %}
+
+    <h3 style="font-weight: bold; text-align: center;">BALANCE PCS :  {{ balance_pcs }}</h3>
+
+    <h3 style="font-weight: bold; text-align: center;">BALANCE GWT :  {{ balance_wt  }}</h3>
+
+    {% endif %}
+
+
+</body>
+
+</html>

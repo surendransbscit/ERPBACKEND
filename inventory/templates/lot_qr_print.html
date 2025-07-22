@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Container Print</title>
+    <style>
+      @page {
+        size: 80mm 100mm; /* Set the size for the page */
+      }
+      body {
+        width: 30mm; /* Set the width as per your thermal printer's width */
+        font-family: Arial, sans-serif; /* Example font family */
+        font-size: 13px;
+        margin-left: 12px;
+        margin-top: 10px;
+      }
+      .qr-code img {
+        width: 200px;
+        height: 200px;
+        display: block;
+        text-align: center;
+      }
+      .lot-value {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .lot-details {
+        display: block;
+        text-align: center;
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="" style="margin-top: 10px">
+      {% comment %} <p style="margin-top: 40px">Container</p> {% endcomment %}
+    </div>
+    <span class="lot-value">Lot Code : {{ data.uid }}</span>
+    <span class="lot-value">Lot Date : {{ data.lot_date || format_date }}</span>
+    <div class="qr-code">
+      <img src="{{ data.qr_path }}" alt="QR Code" />
+    </div>
+    {% comment %} <span class="tag-value">Name : {{ data.name }}</span> {% endcomment %}
+    <span class="lot-details">Pieces : {{ data.pcs }}</span>
+    <span class="lot-details">Gross wt. : {{ data.gwt }}</span>
+    <span class="lot-details">Net wt. : {{ data.nwt }}</span>
+  </body>
+</html>

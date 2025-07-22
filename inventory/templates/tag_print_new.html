@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tag</title>
+    <style>
+        @page {
+            size: 10mm 7mm;
+            /* Set the page size to 6x4 inches */
+            /* Adjust margins as needed */
+            margin: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+        .vertical-text { 
+            -webkit-transform: rotate(-90deg);
+        }
+
+    </style>
+</head>
+
+<body >
+
+    
+
+    <table class="vertical-text">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">KSDJ</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Stn:1</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">916-KD</td>
+                    </tr>
+                    <tr class="qr-code">
+                        <td><img src="{{ item.qr_code_path }}" alt="QR Code"></td>
+                    </tr>
+                </table>
+            </td>
+
+    </table>
+
+</body>
+
+</html>

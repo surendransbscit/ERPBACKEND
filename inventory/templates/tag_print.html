@@ -1,0 +1,69 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <title>Tag</title>
+    <style>
+        @page {
+            size: 100mm 15mm;
+            /* Set the page size to 6x4 inches */
+            /* Adjust margins as needed */
+            margin: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-code img {
+            height: 40px;
+        }
+    </style>
+</head>
+{% for item in item_details %}
+<body>
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>{{ item.product_code }}</td>
+                        <td>{{ item.supplier_short_code }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ item.weight_range }}</td>
+                        <td>{{ item.purchase_date }}</td>
+                    </tr>
+                    <tr class="qr-code">
+                        <td colspan="2"><img src="{{ item.qr_code_path }}" alt="QR Code"></td>
+                    </tr>
+
+
+                </table>
+            </td>
+            <td>
+
+                <table>
+                    <tr>
+                        <td colspan="2"><span class="tag-label">Wt :</span> <span class="tag-value">{{ item.tag_gwt }}</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-label">Ws :</span> <span class="tag-value">{{ item.tag_wastage_percentage }}</span></td>
+                        <td><span class="tag-label">Mc :</span> <span class="tag-value">{{ item.tag_mc_value }}</span>
+                        </td>
+                    </tr>
+                    <tr class="qr-code">
+                        <td colspan="2"><img src="{{ item.qr_code_path }}" alt="QR Code"></td>
+                    </tr>
+                </table>
+            </td>
+            <td></td>
+    </table>
+</body>
+{% endfor %}
+</html>

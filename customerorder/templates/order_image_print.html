@@ -1,0 +1,46 @@
+<style>
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.image-block {
+  width: 30%; /* roughly 3 per row */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.image-block img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.image-details {
+  margin-top: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+</style>
+ <h1 style="font-weight: bold !important;text-align : center" >
+  {{ cus_name}}
+</h1>
+<div class="image-grid">
+  {% for item in order_details %}
+    {% for img in item.order_images %}
+      
+      <div class="image-block">
+        <img src="{{ img.image }}" alt="{{ img.name }}" />
+        <div class="image-details">
+          <strong>{{ item.product_name }}</strong><br />
+          Tag Label: {{ item.tag_code }}<br />
+          Gross Weight: {{ item.gross_wt }}<br />
+          Net Weight: {{ item.net_wt }}
+        </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</div>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+{% load custom_filters %}
+<head>
+    <title>STOCK TRANSFER  {{trans_code}}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 5mm;
+        }
+        body{
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+        }
+
+        .alignleft{
+            text-align: left;
+        }
+        .alignright{
+            text-align: right;
+        }
+        .aligncenter{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+<table>
+    <tbody>
+        
+        <tr>
+            <td class="alignleft" > FROM BRANCH   : {{ transfer_from }}</td>
+            {% if transfer_to %}
+                <td class="alignright"> TO BRANCH : {{ transfer_to }}</td>
+            {% endif %}
+            {% if emp_name %}
+                 <td class="alignright"> TO EMP : {{ emp_name }}</td>
+            {% endif %}
+            {% if customer %}
+                <td class="alignright"> ISSUE TO CUS : {{ customer }}</td>
+            {% endif %}
+        </tr>
+
+        <tr>
+            <td class="alignleft">  TRANS CODE : {{trans_code}}</td>
+            <td class="alignright"> DATE   : {{ trans_date | format_date }}</td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+    {% if item_details %}
+    <table class="purchase" style="width: 100%;">
+        <thead>
+            {% if transfer_type != 1 %}
+              <tr>  <td  colspan="7"  class="aligncenter" > <h3>TRANSFER DETAILS</h3></td> </tr>
+            {% else %}
+                <tr><td  colspan="8" class="aligncenter" > <h3>TRANSFER DETAILS</h3> </td></tr>
+            {% endif %}
+            {% if transfer_type != 1 %}
+              <tr>  <td  colspan="7" class="aligncenter" > <hr class="dashed"></td> </tr>
+            {% else %}
+                <tr><td  colspan="8" class="aligncenter" > <hr class="dashed"></td></tr>
+            {% endif %}
+            <tr style="text-align: left;">
+                {% if transfer_type == 1 %}
+                  <th  class="alignleft">TAG CODE</th>
+                {% endif %}
+                <th class="alignleft" >PRODUCT</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >GWT</th>
+                <th class="alignright" >NWT</th>
+                <th class="alignright" >LWT</th>
+                <th class="alignright" >DIA.WT</th>
+                <th class="alignright" >STN.WT</th>
+                <!-- <th class="alignright"  >AMT</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                
+                {% if transfer_type != 1 %}
+                    <td  colspan="7" > <hr class="dashed"></td>
+                {% else %}
+                   <td  colspan="8" > <hr class="dashed"></td>
+                {% endif %}
+                    
+            </tr>
+            {% for item in item_details %}
+
+            <tr>
+                {% if transfer_type == 1 %}
+                   <td class="alignleft">{{ item.tag_code }}</td>
+                {% endif %}
+                <td class="alignleft">{{ item.product_name }}</td>
+                <td class="alignright" >{{ item.pcs }}</td>
+                <td class="alignright" >{{ item.gross_wt }}</td>
+                <td class="alignright" >{{ item.net_wt }}</td>
+                <td class="alignright" >{{ item.less_wt }}</td>
+                <td class="alignright" >{{ item.dia_wt }}</td>
+                <td class="alignright" >{{ item.stn_wt }}</td>
+                <!-- <td class="alignright" >{{ item.purchase_cost | format_currency  }}</td> -->
+            </tr>
+            {% endfor %}
+
+            <tr>
+                
+                {% if transfer_type != 1 %}
+                    <td  colspan="7" > <hr class="dashed"></td>
+                {% else %}
+                   <td  colspan="8" > <hr class="dashed"></td>
+                {% endif %}
+                    
+            </tr>
+
+            <tr style="font-weight: bold;">
+                <td class="alignleft" style="font-weight: bold;">TOTAL</td>
+                {% if transfer_type == 1 %}
+                   <td class="alignleft"></td>
+                {% endif %}
+                <td class="alignright" >{{total_pcs}}</td>
+                <td class="alignright" >{{total_gross_wt}}</td>
+                <td class="alignright">{{total_net_wt}}</td>
+                <td class="alignright">{{total_less_wt}}</td>
+                <td class="alignright">{{total_dia_wt}}</td>
+                <td class="alignright">{{total_stone_wt}}</td>
+                <!-- <td class="alignright" >{{purchase_amount | format_currency }}</td> -->
+            </tr>
+
+            <tr>
+                
+                {% if transfer_type != 1 %}
+                    <td  colspan="7" > <hr class="dashed"></td>
+                {% else %}
+                   <td  colspan="8" > <hr class="dashed"></td>
+                {% endif %}
+                    
+            </tr>
+
+        </tbody>
+
+    </table>
+    {% endif %}
+
+</body>
+
+</html>

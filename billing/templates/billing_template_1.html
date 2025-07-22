@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+{% load custom_filters %}
+<head>
+    <title>Invoice  {{invoice_data.invoice_no}}</title>
+    <style>
+        @page {
+            size: 80mm 300mm;
+            margin: 2mm;
+            margin-top: 0;
+            /* Set the size for the page */
+
+        }
+        body{
+            text-transform: uppercase;
+            font-size: 12px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-code img {
+            height: 60px;
+            background-color: aquamarine;
+            margin: 0;
+            padding: 0;
+        }
+        hr.dashed {
+            border: none;
+            border-top: 1px dashed #000; /* Dashed line */
+        }
+
+        .alignleft{
+            text-align: left;
+        }
+        .alignright{
+            text-align: right;
+        }
+        .qr-code img {
+            height: 1px;
+        }
+        @media print {
+                .pagebreak { page-break-after: always; } /* page-break-after works, as well */
+            }
+
+    </style>
+</head>
+
+<body>
+
+    <table class="header">
+        <tbody>
+            <br>
+            <tr>
+                <td style="text-align: center" colspan="3" style="font-weight: bold">
+                  <h1>{{invoice_type}}</h1>
+                </td>
+            </tr>
+            <br>
+            <tr >
+                <td style="text-align: left" colspan="3">NO : {{ invoice_data.invoice_no }} DATE : {{ invoice_date|format_date }} {{ time }}</td>
+                <!-- <td> </td> -->
+            </tr>
+
+            <br>
+
+
+            <tr>
+                <td  colspan="2">GOLD 22K : {{ metal_rates.gold_22ct}}</td>
+                
+                <td> SILVER : {{ metal_rates.silver_G }}</td>
+            </tr>
+
+            <tr>
+                <td  colspan="3">Customer : {{customer_name}}</td>
+                
+            </tr>
+            <tr>
+                <td  colspan="3">Ph no : {{customer_mobile}}</td>
+                
+            </tr>
+            <tr>
+                <td  colspan="3">Address : {{address.line1}}
+                    {{address.line2}}
+                    {{address.line3}}
+                </td>
+                
+            </tr>
+
+
+        </tbody>
+    </table>
+    {% if sales_details %}
+
+
+    <table class="sales_details" style="width: 100%;">
+
+        <thead>
+            <th colspan="3">
+                <h3>SALES DETAILS</h3>
+            </th>
+
+            <tr>
+                <td colspan="3">
+                     {{dash}}
+                </td>
+            </tr>
+
+            <tr style="text-align: left;">
+                <th class="alignleft" style="width: 50%;">DESC</th>
+                <th class="alignright"style="width: 15%;" >PCS</th>
+                <th class="alignright"style="width: 35%;">NWT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    {{dash}}
+                </td>
+            </tr>
+            {% for item in sales_details %}
+            <tr>
+                <td class="alignleft" >{{ item.product_name }} - {{ item.design_name }}
+                <td class="alignright">{{ item.pieces }}</td>
+                <td class="alignright">{{ item.net_wt }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="3">
+                    {{dash}}
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;" >
+                <td class="alignleft" style="font-weight: bold;" >TOTAL</td>
+                <td class="alignright">{{total_pcs}}</td>
+                <td class="alignright">{{total_nwt}}</td>
+            </tr>
+            <tr style="font-weight: bold;" >
+                <td class="alignleft" colspan="2" style="font-weight: bold;" >VA.WT</td>
+                <td class="alignright">{{total_wwt}}</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <h1 style="font-weight: bold; text-align: center;">FINAL AMOUNT:  {{ net_amount | format_currency }}</h1>
+
+    {% endif %}
+
+    {% if purchase_details %}
+    <table class="purchase" style="width: 100%;">
+        <thead>
+            <tr>
+                <th colspan="3">
+                    <h3>PURCHASE</h3>
+                </th>
+            </tr>
+            <tr>
+                <th colspan="3">
+                    {{dash}}
+                </th>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" style="width: 50%;" >DESC</th>
+                <th class="alignright" style="width: 25%;" >NWT</th>
+                <th class="alignright" style="width: 25%;" >AMT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    {{dash}}
+                </td>
+            </tr>
+            {% for item in purchase_details %}
+            <tr>
+                <td class="alignleft" >{{ item.product_name }}</td>
+                <td class="alignright" >{{ item.net_wt }}</td>
+                <td class="alignright" >{{ item.amount | format_currency  }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="3">
+                    {{dash}}
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;">
+                <td class="alignleft" style="font-weight: bold;">TOTAL</td>
+                <td class="alignright">{{total_pur_nwt}}</td>
+                <td class="alignright" >{{purchase_amount | format_currency }}</td>
+            </tr>
+            <!-- <tr style="font-weight: bold;" >
+                <td class="alignleft"  style="font-weight: bold;" >VA.WT</td>
+                <td class="alignright">{{total_wwt}}</td>
+                <td></td>
+            </tr> -->
+
+
+        </tbody>
+
+    </table>
+    {% endif %}
+
+    {% if return_details %}
+    <table class="sales_return_details" style="width: 100%">
+      <thead>
+        <tr>
+          <th colspan="3">
+            <h3 class="">RETURN DETAILS</h3>
+          </th>
+        </tr>
+        <tr>
+          <th colspan="3">
+            {{dash}}
+          </th>
+        </tr>
+        <tr style="text-align: left">
+          <th class="alignleft" style="width: 50%;">DESC</th>
+          <th class="alignright" style="width: 25%;" >PCS/NWT</th>
+          <th class="alignright"style="width: 25%;">AMT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="3">
+            {{dash}}
+          </td>
+        </tr>
+        {% for item in return_details %}
+
+        <tr>
+         
+          <td class="alignleft" >{{ item.product_name }}  </td>
+            <td class="alignright">{{ item.pieces }}/{{ item.net_wt }}</td>
+          <td class="alignright">
+            {{ item.item_cost | format_currency }}
+          </td>
+        </tr>
+        {% endfor %}
+
+        <tr>
+          <td colspan="3">
+            {{dash}}
+          </td>
+        </tr>
+        <tr style="font-weight: bold">
+
+          <td class="alignleft" colspan="2" style="font-weight: bold">TOTAL</td>
+
+          <td class="alignright">{{return_amount | format_currency }}</td>
+        </tr> 
+      </tbody>
+    </table>
+    {% endif %}
+
+    <table class="summarry">
+
+        <tr>
+            <td colspan="2">
+                {{dash}}
+            </td>
+        </tr>
+
+        <tbody>
+            {% if sales_details %}
+            <tr>
+                <td class="alignleft">SALES</td>
+                <td class="alignright">{{sales_amount | format_currency }}</td>
+            </tr>
+            {% endif %}
+
+            {% if purchase_details %}
+            <tr>
+                <td class="alignleft">PURCHASE</td>
+                <td class="alignright">{{purchase_amount | format_currency }}</td>
+            </tr>
+            {% endif %}
+
+            {% if return_amount|check_value %}
+            <tr>
+              <td class="alignleft">RETURN</td>
+              <td class="alignright">{{return_amount | format_currency }}</td>
+            </tr>
+            {% endif %}
+
+            {% if total_discount_amount|check_value %}
+            <tr>
+                <td class="alignleft">DISCOUNT</td>
+                <td class="alignright">{{total_discount_amount | format_currency }}</td>
+            </tr>
+            {% endif %}
+
+            {% if round_off|check_value %}
+            <tr>
+              <td class="alignleft">ROUND OFF</td>
+              <td class="alignright">{{round_off | format_currency }}</td>
+            </tr>
+            {% endif %}
+
+            <tr>
+                <td colspan="2">
+                    {{dash}}
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;" >
+
+                <td class="alignleft"> GRAND TOTAL</td>
+                <td class="alignright">{{net_amount | format_currency }}</td>
+
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    {{dash}}
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <table class="payment_summarry">
+        <tbody>
+        <tr>
+            <th colspan="2">
+                <h3 class="alignleft">PAYMENT DETAILS</h3>
+            </th>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {{dash}}
+            </td>
+          </tr>
+        
+          {% if deposit_amount|check_value %}
+          <tr>
+           
+            <td class="alignleft">DEPOSIT AMOUNT</td>
+            <td class="alignright">{{ deposit_amount | format_currency }}</td>
+          </tr>
+          {% endif %}
+  
+          {% if advance_adj_amount|check_value %}
+          <tr>
+           
+            <td class="alignleft">ADV ADJUSTED</td>
+            <td class="alignright">{{ advance_adj_amount | format_currency }}</td>
+          </tr>
+          {% endif %}
+  
+          {% if total_chit_amount|check_value %}
+          <tr>
+           
+            <td class="alignleft">CHIT ADJUSTED</td>
+            <td class="alignright">{{ total_chit_amount | format_currency }}</td>
+          </tr>
+          {% endif %}
+  
+          {% for item in payment_details %}
+  
+          <tr style="">
+           
+            <td class="alignleft">{{ item.mode_name }}</td>
+            <td class="alignright">
+              {{ item.payment_amount | format_currency }}
+            </td>
+          </tr>
+  
+          {% endfor %}
+  
+          {% if due_amount|check_value %}
+          <tr>
+           
+            <td class="alignleft">DUE AMOUNT</td>
+            <td class="alignright">{{ due_amount | format_currency }}</td>
+          </tr>
+          {% endif %}
+  
+  
+  
+          {% if show_balance_amount %}
+          <tr>
+           
+  
+            <td colspan="2">
+                {{dash}}
+            </td>
+          </tr>
+          <tr>
+           
+            <td class="alignleft">BALANCE</td>
+            <td class="alignright">{{balance_amount}}</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>    
+</body>
+
+</html>

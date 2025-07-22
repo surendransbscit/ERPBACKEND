@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+{% load custom_filters %}
+
+<head>
+    <title>ORDER {{order_no}}</title>
+    <style>
+        @page {
+            size: 80mm 250mm;
+            margin: 2mm;
+            margin-top: 0;
+        }
+
+        body {
+            text-transform: uppercase !important;
+            font-size: 10px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+
+        hr.dashed {
+            border: none;
+            border-top: 1px dashed #000;
+            /* Dashed line */
+        }
+
+        .alignleft {
+            text-align: left;
+        }
+
+        .alignright {
+            text-align: right;
+        }
+
+        .qr-code img {
+            height: 1px;
+        }
+
+        @media print {
+            .pagebreak {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    <table>
+        <tbody>
+            <tr>
+                <td class="alignleft">NAME : {{cus_name}}</td>
+                <td class="alignright">ORDER NO : {{ order_no }}</td>
+            </tr>
+
+            <tr>
+                <td class="alignleft">MOBILE : {{ mobile }}</td>
+                <td class="alignright">BRANCH : {{ branch_name }}</td>
+            </tr>
+
+            <tr>
+                <td class="alignleft">ADDRESS : {{ address }}</td>
+                <td class="alignright">DATE : {{ order_date | format_date }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="purchase" style="width: 100%">
+        <thead>
+            <tr>
+                <th colspan="5">
+                    <h3>REPAIR DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed" />
+                </td>
+            </tr>
+            <tr style="text-align: left">
+                <th class="alignleft" style="width: 30%;">PRODUCT</th>
+                
+                <th class="alignleft" style="width: 25%;">TYPE</th>
+
+                <th class="alignright" style="width: 20%;">PCS</th>
+                <th class="alignright" style="width: 25%;">GWT</th>
+                <th class="alignright" style="width: 25%;">AMT</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed" />
+                </td>
+            </tr>
+            {% for item in order_details %}
+
+            <tr>
+                <td class="alignleft">{{ item.product_name }}</td>
+                <td class="alignleft">{{ item.repair_name }}</td>
+                <td class="alignright">{{ item.pieces }}</td>
+                <td class="alignright">{{ item.gross_wt }}</td>
+                <td class="alignright">{{ item.repair_approx_amt }}</td>
+            </tr>
+
+            {% if order_type|add:0 == 3 %}
+            <tr>
+                <td colspan="5" class="alignleft">Remarks : {{ item.remarks }}</td>
+            </tr>
+            {% endif %} {% endfor %}
+
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed" />
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+</body>
+
+</html>

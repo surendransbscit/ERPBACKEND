@@ -1,0 +1,24 @@
+<table class="header">
+    <tbody>
+        <br>
+        <tr>
+            <td style="text-align: center" colspan="3" style="font-weight: bold;"> <h1 style="font-weight: bold !important;" >{{ company_detail.company_name}}</h1></td>
+        </tr>
+        {% if company_detail.address1 %}
+        <tr>
+            <td style="text-align: center" colspan="3" style="font-weight: bold;">{{ company_detail.address1}}</td>
+        </tr>
+        {% endif %}
+        {% if company_detail.email %}
+        <tr>
+            <td style="text-align: center" colspan="3" style="font-weight: bold;">Email : {{ company_detail.email}}</td>
+        </tr>
+        {% endif %}
+        {% if company_detail.gst_number %}
+        <tr>
+            <td style="text-align: center" colspan="3" style="font-weight: bold;">GST NO : {{ company_detail.gst_number  }}</td>
+        </tr>
+        {% endif %}
+ 
+    </tbody>
+</table>

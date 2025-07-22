@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+{% load custom_filters %}
+<head>
+    <title>PO  {{ref_no}}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 5mm;
+        }
+        body{
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+        }
+
+        .alignleft{
+            text-align: left;
+        }
+        .alignright{
+            text-align: right;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+<table>
+    <tbody>
+        
+        <tr>
+            <td class="alignleft"> REF NO : {{ref_no}}</td>
+            <td class="alignright" > BRANCH   : {{ branch }}</td>
+        </tr>
+
+        <tr>
+            <td class="alignleft"> SUPPLIER : {{ supplier_name }}</td>
+            <td class="alignright"> DATE   : {{ entry_date | format_date }}</td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+    {% if item_details %}
+    <table class="purchase" style="width: 100%;">
+        <thead>
+            <tr>
+                <th colspan="5">
+                    <h3>PURCHASE DETAILS</h3>
+                </th>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            <tr style="text-align: left;">
+                <th class="alignleft" >ITEM</th>
+                <th class="alignleft" >SIZE</th>
+                <th class="alignright" >PCS</th>
+                <th class="alignright" >Amount</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+            {% for item in item_details %}
+
+            <tr>
+                <td class="alignleft">{{ item.item_name }}</td>
+                <td class="alignleft">{{ item.size_name }}</td>
+                <td class="alignright" >{{ item.pieces }}</td>
+                <td class="alignright" >{{ item.total_amount }}</td>
+                
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+            <tr style="font-weight: bold;">
+                <td class="alignleft" style="font-weight: bold;">TOTAL</td>
+                <td class="alignright" ></td>
+                <td class="alignright" >{{total_pcs}}</td>
+                <td class="alignright" >{{purchase_amount}}</td>
+            </tr>
+
+            <tr>
+                <td colspan="5">
+                    <hr class="dashed">
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+    {% endif %}
+
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tag</title>
+    <style>
+        @page {
+            size: 6mm 10mm;
+            /* Set the page size to 6x4 inches */
+            /* Adjust margins as needed */
+            margin: 2px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            padding: 0;
+        }
+
+        .qr-code img {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+{% for item in item_details %}
+
+<body>
+    <table>
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td style="font-weight: bold;">KSJ</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Stn:1</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">916-KD</td>
+                    </tr>
+                    <tr class="qr-code">
+                        <td><img src="{{ item.qr_code_path }}" alt="QR Code"></td>
+                    </tr>
+                </table>
+            </td>
+
+    </table>
+</body>
+{% endfor %}
+
+</html>

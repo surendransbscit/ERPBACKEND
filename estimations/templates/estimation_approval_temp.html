@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Estimation Approval Details</title>
+    <style>
+      @page {
+        size: 80mm 90mm; /* Set the size for the page */
+      }
+      body {
+        width: 30mm; /* Set the width as per your thermal printer's width */
+        font-family: Arial, sans-serif; /* Example font family */
+        font-size: 13px;
+        margin-left: 12px;
+        margin-top: 10px;
+      }
+      .qr-code img {
+        width: 100px;
+        height: 100px;
+        display: block;
+        text-align: center;
+      }
+      .est-value {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .est-details {
+        display: block;
+        text-align: center;
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="" style="margin-top: 10px">
+      {% comment %} <p style="margin-top: 40px">Est Approval Details</p> {% endcomment %}
+    </div>
+    <span class="est-value">Est No : {{ data.estimation_no }}</span>
+    <div class="qr-code">
+      <img src="{{ data.qr_path }}" alt="QR Code" />
+    </div>
+    <span class="est-details">Final Amount : {{ data.final_amount }}</span>
+    <div class="qr-code">
+      <span class="est-details"> Approved by : </span>
+       <img src="{{ data.employee_signature }}" alt="Signature" /><br />
+      <span class="est-details"> {{ data.firstname }}</span>
+    </div>
+    <!-- <span class="est-details">Approved by  : {{ data.employee_signature }}</span> -->
+  </body>
+</html>

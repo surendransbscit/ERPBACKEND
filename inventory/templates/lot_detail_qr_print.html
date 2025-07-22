@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Container Print</title>
+    <style>
+      @page {
+        size: 80mm 100mm; /* Set the size for the page */
+        margin: 10px; 
+      }
+      body {
+        width: 30mm; /* Set the width as per your thermal printer's width */
+        font-family: Arial, sans-serif; /* Example font family */
+        font-size: 13px;
+        margin-left: 12px;
+        margin-top: 10px;
+      }
+      .qr-code img {
+        width: 150px;
+        height: 150px;
+        width: 160px;
+        height: 160px;
+        display: block;
+        text-align: center;
+      }
+      .lot-code{
+        text-align: center;
+        margin-top: 50mm;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .lot-details {
+        display: block;
+        text-align: center;
+        margin-top: 3mm;
+        font-size: 14px;
+        font-weight: bold;
+        
+      }
+      .lot-details-last{
+        display: block;
+        text-align: center;
+        margin-top: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 50rem;
+      }
+      .size
+      {
+        text-align: center;
+      }
+      .lot_date
+      {
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  {% for item in data %}
+  <body>
+   
+    <div class="lot-code">Lot Code : {{ item.uid }}</div>
+    <div class="lot-details">Lot Date : {{ item.lot_date }}</div>
+    {% if item.size_name %}
+    <div class="lot-details">Size : {{ item.size_name }}</div>
+    {% endif %}
+    <div class="qr-code">
+      <img src="{{ item.qr_path }}" alt="QR Code" />
+    </div>
+    {% comment %} <span class="tag-value">Name : {{ data.name }}</span> {% endcomment %}
+    <span class="lot-details">Pieces : {{ item.pcs }}</span>
+    <span class="lot-details">Gross wt. : {{ item.gwt }}</span>
+    <span class="lot-details-last">Net wt. : {{ item.nwt }}</span>
+  </body>
+  {% endfor %}
+</html>

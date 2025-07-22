@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tag Image Print</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .tag-card {
+      margin-bottom: 40px;
+      page-break-inside: avoid;
+    }
+
+    img {
+      max-width: 250px;
+      max-height: 250px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .tag-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .tag-info {
+      font-size: 14px;
+      margin: 2px 0;
+    }
+  </style>
+</head>
+<body>
+
+  {% for tag in tags %}
+    <div class="tag-card">
+      {% if tag.image %}
+        <img style="width: 150px;" src="{{ tag.image }}" alt="Tag Image" >
+      {% endif %}
+      <div class="tag-info">Tag Label: {{ tag.tag_code }}</div>
+      <div class="tag-info">Gross Weight: {{ tag.tag_gwt }}</div>
+      <div class="tag-info">Net Weight: {{ tag.tag_nwt }}</div>
+    </div>
+  {% endfor %}
+
+</body>
+</html>

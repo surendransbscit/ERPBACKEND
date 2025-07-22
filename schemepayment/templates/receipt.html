@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thermal Print</title>
+    <style>
+      @page {
+        size: 90mm 100mm; /* Set the size for the page */
+      }
+      body {
+        width: 30mm; /* Set the width as per your thermal printer's width */
+        font-family: Arial, sans-serif; /* Example font family */
+        font-size: 13px;
+        margin-left: 40px;
+        margin-top: 10px;
+      }
+
+      .title {
+        margin-left: 40px;
+      }
+      info-table {
+        width: 100%;
+        margin-top: 10mm; /* Adjust margin top as needed */
+        border-collapse: collapse;
+      }
+      .info-table td {
+        border: 0px; /* Example border style */
+      }
+      .info-label {
+        font-weight: bold;
+        white-space: nowrap; /* Prevent label text from wrapping */
+      }
+      .info-value {
+        font-weight: bold;
+        white-space: nowrap; /* Prevent label text from wrapping */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="" style="margin-top: 20px">
+      <p>PAYMENT RECEIPT</p>
+      <p>Shining dawn</p>
+      <p>{{content.scheme_name}}</p>
+    </div>
+    <table class="info-table">
+      <tr>
+        <td >Customer</td>
+        <td class="info-value">{{content.customer_name}}</td>
+      </tr>
+      <tr>
+        <td >Mobile</td>
+        <td class="info-value">{{content.mobile}}</td>
+      </tr>
+      <tr>
+        <td >Account Name</td>
+        <td class="info-value">{{content.account_name}}</td>
+      </tr>
+      <tr>
+        <td >Account No</td>
+        <td class="info-value">{{content.account_number}}</td>
+      </tr>
+      {% if not content.scheme_type == 2 %}
+      <tr>
+        <td >Paid Installment</td>
+        <td class="info-value">{{content.installment}}</td>
+      </tr>
+      {% endif %}
+      {% if not content.scheme_type == 0 %}
+      <tr>
+        <td >Metal Rate</td>
+        <td class="info-value">{{content.metal_rate}}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td >Receipt Amount</td>
+        <td class="info-value">Rs.{{content.payment_amount}}</td>
+      </tr>
+      <tr>
+        <td >Receipt Weight</td>
+        <td class="info-value">{{content.metal_weight}} Grams</td>
+      </tr>
+      {% if content.scheme_type == 2 %}
+      <tr>
+        <td >Bonus Amt / Wt</td>
+        <td class="info-value">{{content.bonus_metal_amount}} / {{content.bonus_metal_weight}}</td>
+      </tr>
+      {% endif %}
+
+      {% if content.scheme_type == 2 %}
+      <tr>
+        <td >Total Receipt Weight</td>
+        <td class="info-value">{{content.total_receipt_weight}} Grams</td>
+      </tr>
+      {% endif %}
+      {% if content.scheme_type == 2 %}
+      <tr>
+        <td >Wallet Weight</td>
+        <td class="info-value">{{content.total_wallet_weight}} Grams</td>
+      </tr>
+      {% endif %}
+      {% if content.scheme_type == 2 %}
+      <tr>
+        <td >Wallet Amount</td>
+        <td class="info-value">Rs.{{content.total_wallet_amount}}</td>
+      </tr>
+      {% endif %}
+      {% if not content.scheme_type == 2 %}
+      <tr>
+        <td >Bonus</td>
+        <td class="info-value">Rs.{{content.discountAmt}}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td >Collected By</td>
+        <td class="info-value">{{content.created_by}}</td>
+      </tr>
+    </table>
+  </body>
+</html>
